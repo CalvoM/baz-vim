@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type {Statistics, CodeMirrorRef} from "#build/nuxt-codemirror";
-import { vim, getCM } from '@replit/codemirror-vim';
+import { vim, Vim, getCM } from '@replit/codemirror-vim';
+import { keymap } from '@codemirror/view';
 import type { EditorView, ViewUpdate } from '@codemirror/view';
+import { Prec } from '@codemirror/state';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { bazVimTheme } from '../theme';
@@ -11,7 +13,15 @@ const editor_stats = useEditorStats();
 const vim_editor = useVimeEditor();
 
 const cmRef = ref<CodeMirrorRef>();
-const extensions = computed(() => [lang_meta.currentLanguage.value === 'js' ? javascript() : python(), vim()])
+
+const blockArrowKeys = Prec.highest(keymap.of([
+  { key: 'ArrowLeft',  run: () => true },
+  { key: 'ArrowRight', run: () => true },
+  { key: 'ArrowUp',    run: () => true },
+  { key: 'ArrowDown',  run: () => true },
+]));
+
+const extensions = computed(() => [lang_meta.currentLanguage.value === 'js' ? javascript() : python(), vim(), blockArrowKeys])
 
 function handleCreateEditor({ view }: { view: EditorView }) {
   const cm = getCM(view);
@@ -19,6 +29,11 @@ function handleCreateEditor({ view }: { view: EditorView }) {
   cm.on('vim-mode-change', (e: VimModeEvent) => {
     vim_editor.setVimModeEvent(e);
   });
+  Vim.unmap("<Left>");
+  Vim.unmap("<Right>");
+  Vim.unmap("<Up>");
+  Vim.unmap("<Down>");
+  Vim.unmap("gg", "normal");
 }
 
 const handleStatistics = (s: Statistics) => { editor_stats.updateStatistics(s); };
