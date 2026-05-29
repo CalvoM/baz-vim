@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { javascript } from '@codemirror/lang-javascript';
-import { python } from '@codemirror/lang-python';
-import type { EditorView, ViewUpdate } from '@codemirror/view';
-import { vim, getCM } from '@replit/codemirror-vim';
-import type { CodeMirrorRef, Statistics } from '../src/runtime/types/nuxt-codemirror';
-import { bazVimTheme } from './theme';
 
 useHead({
   link: [
@@ -17,87 +11,10 @@ useHead({
   ],
 });
 
-const starterCodes = {
-  js: `// baz-vim — where code meets warmth
-const forest = {
-  palette: ['#9C7948', '#59691F', '#0B330C'],
-  depth:   ['#361015', '#1B2933'],
-}
+const lang_meta = useLang();
+const editor_stats = useEditorStats();
+const vim_editor = useVimeEditor();
 
-function kindle(spark = 42) {
-  const ember = spark > 0
-    ? forest.palette.map(c => c.toUpperCase())
-    : null
-
-  console.log('burning bright ✦', ember)
-  return ember
-}
-
-kindle()`,
-
-  py: `# baz-vim — where code meets warmth
-forest = {
-    "palette": ["#9C7948", "#59691F", "#0B330C"],
-    "depth":   ["#361015", "#1B2933"],
-}
-
-def kindle(spark=42):
-    ember = (
-        [c.upper() for c in forest["palette"]]
-        if spark > 0 else None
-    )
-    print("burning bright ✦", ember)
-    return ember
-
-kindle()`,
-}
-
-const code  = ref(starterCodes.js);
-const cmRef = ref<CodeMirrorRef>();
-const stats = ref<Statistics | null>(null);
-
-type Lang = 'js' | 'py'
-const lang = ref<Lang>('js')
-const langMeta = { js: { label: 'JavaScript', file: 'scratch.js' }, py: { label: 'Python', file: 'scratch.py' } }
-const extensions = computed(() => [lang.value === 'js' ? javascript() : python(), vim()])
-
-watch(lang, (l) => { code.value = starterCodes[l] })
-
-interface VimModeEvent { mode: string; subMode?: string }
-const vimModeEvent = ref<VimModeEvent>({ mode: 'normal' });
-
-const vimModeLabel = computed(() => {
-  const { mode, subMode } = vimModeEvent.value;
-  if (mode === 'visual') {
-    if (subMode === 'linewise')  return 'V-LINE';
-    if (subMode === 'blockwise') return 'V-BLOCK';
-    return 'VISUAL';
-  }
-  return mode.toUpperCase();
-});
-
-const vimModeClass = computed(() => `vim-mode--${vimModeEvent.value.mode}`);
-
-function handleCreateEditor({ view }: { view: EditorView }) {
-  const cm = getCM(view);
-  if (!cm) return;
-  cm.on('vim-mode-change', (e: VimModeEvent) => {
-    vimModeEvent.value = e;
-  });
-}
-
-const lineNum = computed(() => stats.value?.line.number ?? 1);
-const colNum  = computed(() => {
-  if (!stats.value) return 1;
-  return stats.value.selectionAsSingle.anchor - stats.value.line.from + 1;
-});
-const lineCount = computed(() => stats.value?.lineCount ?? 0);
-
-const handleStatistics = (s: Statistics) => { stats.value = s; };
-const handleUpdate     = (_: ViewUpdate) => {
-};
-const handleChange     = (_v: string, _u: ViewUpdate) => {
-};
 </script>
 
 <template>
@@ -128,44 +45,29 @@ const handleChange     = (_v: string, _u: ViewUpdate) => {
           <span class="dot dot-y" />
           <span class="dot dot-g" />
         </div>
-        <span class="file-name">{{ langMeta[lang].file }}</span>
+        <span class="file-name">{{lang_meta.currentFileName}}</span>
         <div class="lang-switcher">
           <button
             v-for="l in (['js', 'py'] as Lang[])"
             :key="l"
             class="lang-btn"
-            :class="{ 'is-active': lang === l }"
-            @click="lang = l"
-          >{{ langMeta[l].label }}</button>
+            :class="{ 'is-active': lang_meta.currentLanguage.value === l }"
+            @click="lang_meta.switchLanguage(l)"
+            >{{ LangMetaDetails[l].label }}</button>
         </div>
       </div>
 
-      <NuxtCodeMirror
-        ref="cmRef"
-        v-model="code"
-        placeholder="start typing…"
-        :auto-focus="true"
-        :editable="true"
-        :extensions="extensions"
-        :basic-setup="true"
-        :indent-with-tab="true"
-        height="50vh"
-        :theme="bazVimTheme"
-        @on-change="handleChange"
-        @on-statistics="handleStatistics"
-        @on-update="handleUpdate"
-        @on-create-editor="handleCreateEditor"
-      />
+      <VimEditor />
 
       <!-- Status bar -->
       <div class="status-bar">
-        <span class="vim-mode" :class="vimModeClass">{{ vimModeLabel }}</span>
+        <span class="vim-mode" :class="vim_editor.vimModeClass">{{ vim_editor.vimModeLabel }}</span>
         <span class="status-sep">│</span>
-        <span class="cursor-pos">{{ lineNum }}:{{ colNum }}</span>
+        <span class="cursor-pos">{{editor_stats.currentLineNum}}:{{ editor_stats.currentColNum }}</span>
         <span class="status-sep">│</span>
-        <span class="line-total">{{ lineCount }} lines</span>
+        <span class="line-total">{{ editor_stats.currentLineCount }} lines</span>
         <span class="status-spacer" />
-        <span class="status-lang">{{ langMeta[lang].label }}</span>
+        <span class="status-lang">{{ lang_meta.currentLabel }}</span>
         <span class="status-sep">│</span>
         <span class="status-enc">UTF-8</span>
       </div>
