@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 useHead({
   link: [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -10,82 +9,15 @@ useHead({
     },
   ],
 });
-
-const lang_meta = useLang();
-const editor_stats = useEditorStats();
-const vim_editor = useVimeEditor();
-
 </script>
 
 <template>
-  <!-- Ambient background orbs -->
   <div class="orb orb-gold"   aria-hidden="true" />
   <div class="orb orb-maroon" aria-hidden="true" />
   <div class="orb orb-forest" aria-hidden="true" />
   <div class="dot-grid"       aria-hidden="true" />
-
-  <main class="site">
-
-    <!-- ── Header ──────────────────────────────────────── -->
-    <header class="site-header">
-      <div class="badge">✦ VIM POWERED ✦</div>
-      <h1 class="site-title">
-        baz<span class="title-dash">-</span>vim
-      </h1>
-      <p class="site-tagline">
-        <em>write code &nbsp;·&nbsp; live vim &nbsp;·&nbsp; burn bright</em>
-      </p>
-    </header>
-
-    <!-- ── Editor card ─────────────────────────────────── -->
-    <section class="editor-wrap">
-      <div class="card-header">
-        <div class="window-dots">
-          <span class="dot dot-r" />
-          <span class="dot dot-y" />
-          <span class="dot dot-g" />
-        </div>
-        <span class="file-name">{{lang_meta.currentFileName}}</span>
-        <div class="lang-switcher">
-          <button
-            v-for="l in (['js', 'py'] as Lang[])"
-            :key="l"
-            class="lang-btn"
-            :class="{ 'is-active': lang_meta.currentLanguage.value === l }"
-            @click="lang_meta.switchLanguage(l)"
-            >{{ LangMetaDetails[l].label }}</button>
-        </div>
-      </div>
-
-      <VimEditor />
-
-      <!-- Status bar -->
-      <div class="status-bar">
-        <span class="vim-mode" :class="vim_editor.vimModeClass">{{ vim_editor.vimModeLabel }}</span>
-        <span class="status-sep">│</span>
-        <span class="cursor-pos">{{editor_stats.currentLineNum}}:{{ editor_stats.currentColNum }}</span>
-        <span class="status-sep">│</span>
-        <span class="line-total">{{ editor_stats.currentLineCount }} lines</span>
-        <span class="status-spacer" />
-        <span class="status-lang">{{ lang_meta.currentLabel }}</span>
-        <span class="status-sep">│</span>
-        <span class="status-enc">UTF-8</span>
-      </div>
-    </section>
-
-    <!-- ── Keyboard ─────────────────────────────────────── -->
-    <section class="kb-section">
-      <VimKeyboard :show-finger-colors="true" />
-    </section>
-
-    <!-- ── Footer ──────────────────────────────────────── -->
-    <footer class="site-footer">
-      <span class="footer-glyph">◆</span>
-      <span>baz-vim</span>
-      <span class="footer-glyph">◆</span>
-    </footer>
-
-  </main>
+  <NuxtPage />
+  <ToastContainer />
 </template>
 
 <style>
@@ -182,27 +114,7 @@ body {
   60%       { transform: translate(-35px, 30px) scale(0.96); }
 }
 
-/* ── Site layout ───────────────────────────────────────── */
-.site {
-  position: relative;
-  z-index: 1;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 48px 28px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-}
-
-/* ── Header ────────────────────────────────────────────── */
-.site-header {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
+/* ── Shared badge ──────────────────────────────────────── */
 .badge {
   display: inline-block;
   font-family: 'Fraunces', serif;
@@ -228,8 +140,45 @@ body {
   animation: badge-shine 4s ease-in-out infinite;
 }
 @keyframes badge-shine {
-  0%   { left: -60%; }
+  0%        { left: -60%; }
   50%, 100% { left: 130%; }
+}
+
+/* ── Shared title pulse ────────────────────────────────── */
+@keyframes title-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 40px rgba(156,121,72,0.5),
+      0 0 80px rgba(156,121,72,0.2),
+      0 2px 0 rgba(0,0,0,0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 55px rgba(156,121,72,0.7),
+      0 0 110px rgba(156,121,72,0.3),
+      0 2px 0 rgba(0,0,0,0.4);
+  }
+}
+
+/* ── Editor page layout ────────────────────────────────── */
+.site {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.site-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  position: relative;
 }
 
 .site-title {
@@ -251,21 +200,6 @@ body {
   text-shadow:
     0 0 30px rgba(89,105,31,0.6),
     0 0 60px rgba(89,105,31,0.2);
-}
-
-@keyframes title-pulse {
-  0%, 100% {
-    text-shadow:
-      0 0 40px rgba(156,121,72,0.5),
-      0 0 80px rgba(156,121,72,0.2),
-      0 2px 0 rgba(0,0,0,0.4);
-  }
-  50% {
-    text-shadow:
-      0 0 55px rgba(156,121,72,0.7),
-      0 0 110px rgba(156,121,72,0.3),
-      0 2px 0 rgba(0,0,0,0.4);
-  }
 }
 
 .site-tagline {
@@ -359,12 +293,10 @@ body {
   cursor: pointer;
   transition: color 120ms, background 120ms, border-color 120ms;
 }
-
 .lang-btn:hover {
   color: rgba(212,201,168,0.7);
   border-color: rgba(156,121,72,0.3);
 }
-
 .lang-btn.is-active {
   color: var(--c-gold);
   background: rgba(156,121,72,0.1);
@@ -393,7 +325,6 @@ body {
   border-radius: 4px;
   padding: 2px 8px;
   transition: color 80ms, background 80ms, border-color 80ms;
-  /* normal (default) */
   color: var(--c-gold);
   background: rgba(156,121,72,0.12);
   border: 1px solid rgba(156,121,72,0.3);
@@ -423,7 +354,6 @@ body {
 
 /* ── Keyboard section ──────────────────────────────────── */
 .kb-section {
-  /* Break out of .site's max-width so the keyboard isn't clipped */
   width: 100vw;
   margin-left: calc(50% - 50vw);
   display: flex;
@@ -456,4 +386,34 @@ body {
   .site { padding: 32px 16px 28px; gap: 24px; }
   .status-lang, .status-enc { display: none; }
 }
+
+/* ── Page transitions (horizontal, simultaneous) ───────── */
+
+/* Leaving page: pin to viewport so it doesn't shift layout */
+.page-right-leave-active,
+.page-left-leave-active {
+  position: fixed !important;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition:
+    opacity   260ms ease,
+    transform 280ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Entering page: animate from its natural position */
+.page-right-enter-active,
+.page-left-enter-active {
+  transition:
+    opacity   300ms 40ms ease,
+    transform 300ms 40ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Landing → Editor */
+.page-right-enter-from { opacity: 0; transform: translateX(52px);  }
+.page-right-leave-to   { opacity: 0; transform: translateX(-52px); }
+
+/* Editor → Landing */
+.page-left-enter-from  { opacity: 0; transform: translateX(-52px); }
+.page-left-leave-to    { opacity: 0; transform: translateX(52px);  }
 </style>
