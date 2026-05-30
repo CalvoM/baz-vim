@@ -1,1 +1,4 @@
-export interface VimModeEvent { mode: string; subMode?: string }
+export interface VimModeEvent {
+  mode: string;
+  subMode?: string;
+}

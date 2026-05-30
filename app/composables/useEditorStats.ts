@@ -1,6 +1,6 @@
-import type {Statistics} from "#build/nuxt-codemirror";
+import type { Statistics } from "#build/nuxt-codemirror";
 
-export default function(){
+export default function () {
   const store = useEditorStatsStore();
 
   const currentStats = computed(() => store.stats);
@@ -13,6 +13,6 @@ export default function(){
     currentLineNum,
     currentColNum,
     currentLineCount,
-    updateStatistics
-  }
+    updateStatistics,
+  };
 }

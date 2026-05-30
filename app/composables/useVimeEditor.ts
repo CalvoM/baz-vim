@@ -1,7 +1,7 @@
-export default function(){
+export default function () {
   const store = useVimEditorStore();
 
-  const vimModeEvent = computed(() =>store.vimModeEvent);
+  const vimModeEvent = computed(() => store.vimModeEvent);
   const mode = computed(() => store.mode);
   const subMode = computed(() => store.subMode);
   const vimModeLabel = computed(() => store.vimModeLabel);
@@ -13,6 +13,6 @@ export default function(){
     subMode,
     vimModeLabel,
     vimModeClass,
-    setVimModeEvent
-  }
+    setVimModeEvent,
+  };
 }

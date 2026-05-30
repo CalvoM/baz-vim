@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const toast = useToast()
+const toast = useToast();
 
 const BADGE: Record<string, string> = {
-  default: 'i',
-  success: 'ok',
-  error:   '!',
-}
+  default: "i",
+  success: "ok",
+  error: "!",
+};
 </script>
 
 <template>
@@ -26,7 +26,9 @@ const BADGE: Record<string, string> = {
             class="toast-dismiss"
             aria-label="Dismiss notification"
             @click="toast.dismiss(t.id)"
-          >×</button>
+          >
+            ×
+          </button>
         </div>
       </TransitionGroup>
     </div>
@@ -81,7 +83,7 @@ const BADGE: Record<string, string> = {
 
 /* Prefix badge */
 .toast-badge {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -97,7 +99,7 @@ const BADGE: Record<string, string> = {
 
 /* Message */
 .toast-message {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.04em;
@@ -108,7 +110,7 @@ const BADGE: Record<string, string> = {
 
 /* Dismiss button */
 .toast-dismiss {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 16px;
   line-height: 1;
   color: rgba(212, 201, 168, 0.3);
@@ -126,7 +128,7 @@ const BADGE: Record<string, string> = {
 
 /* ── Variant color tokens ──────────────────────────────── */
 .toast--default {
-  --toast-color: #9C7948;
+  --toast-color: #9c7948;
   border-color: rgba(156, 121, 72, 0.28);
 }
 .toast--success {
@@ -140,10 +142,14 @@ const BADGE: Record<string, string> = {
 
 /* ── TransitionGroup ───────────────────────────────────── */
 .toast-enter-active {
-  transition: opacity 130ms ease-out, transform 130ms ease-out;
+  transition:
+    opacity 130ms ease-out,
+    transform 130ms ease-out;
 }
 .toast-leave-active {
-  transition: opacity 280ms ease-in, transform 280ms ease-in;
+  transition:
+    opacity 280ms ease-in,
+    transform 280ms ease-in;
   /* keep in flow so siblings reflow smoothly */
 }
 .toast-move {

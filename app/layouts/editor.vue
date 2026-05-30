@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const collapsed = ref(false)
+const collapsed = ref(false);
 </script>
 
 <template>
   <div class="editor-layout" :class="{ 'is-collapsed': collapsed }">
-
     <!-- ── Header ──────────────────────────────────────── -->
     <header class="layout-header">
       <NuxtLink to="/" class="layout-home">← home</NuxtLink>
@@ -33,7 +32,6 @@ const collapsed = ref(false)
       <span>baz-vim</span>
       <span class="footer-glyph">◆</span>
     </footer>
-
   </div>
 </template>
 
@@ -72,7 +70,7 @@ const collapsed = ref(false)
 }
 
 .layout-home {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: rgba(156, 121, 72, 0.5);
   text-decoration: none;
@@ -81,10 +79,12 @@ const collapsed = ref(false)
   flex-shrink: 0;
   width: 80px;
 }
-.layout-home:hover { color: var(--c-gold); }
+.layout-home:hover {
+  color: var(--c-gold);
+}
 
 .layout-title {
-  font-family: 'Fraunces', serif;
+  font-family: "Fraunces", serif;
   font-optical-sizing: auto;
   font-size: 28px;
   font-weight: 900;
@@ -135,7 +135,7 @@ const collapsed = ref(false)
 .layout-footer {
   grid-area: footer;
   text-align: center;
-  font-family: 'Fraunces', serif;
+  font-family: "Fraunces", serif;
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.18em;
