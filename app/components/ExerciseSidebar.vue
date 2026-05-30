@@ -23,6 +23,7 @@ function toggleItem(id: string) {
 const isExpanded = (id: string) => expandedIds.value.has(id);
 
 const CAT_COLOR: Record<Category, string> = {
+  introduction: "#c47060",
   navigation: "#9C7948",
   editing: "#7aab2f",
   motions: "#4a8fb5",
@@ -151,6 +152,7 @@ const DIFF_COLOR: Record<string, string> = {
   overflow: hidden;
   position: relative;
   z-index: 1;
+  height:100%;
 }
 
 /* ── Sidebar toggle ────────────────────────────────────── */
@@ -245,7 +247,7 @@ const DIFF_COLOR: Record<string, string> = {
 
 .ex-group-label {
   font-family: "Fraunces", serif;
-  font-size: 18px;
+  font-size: 1.65em;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -253,6 +255,7 @@ const DIFF_COLOR: Record<string, string> = {
 /* ── Exercise item wrapper ─────────────────────────────── */
 .ex-item {
   border-left: 2px solid transparent;
+  padding: 1em 0;
   transition:
     border-color 140ms,
     background 140ms;
@@ -293,8 +296,8 @@ const DIFF_COLOR: Record<string, string> = {
 
 .ex-item-title {
   font-family: "JetBrains Mono", monospace;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 1.5em;
+  font-weight: bolder;
   color: var(--c-cream);
   flex: 1;
   line-height: 1.3;
@@ -314,8 +317,8 @@ const DIFF_COLOR: Record<string, string> = {
 
 .ex-chevron {
   font-family: "JetBrains Mono", monospace;
-  font-size: 15px;
-  color: rgba(156, 121, 72, 0.35);
+  font-size: 1.2em;
+  color: rgba(156, 121, 72, 0.85);
   flex-shrink: 0;
   line-height: 1;
   transition:
@@ -325,7 +328,7 @@ const DIFF_COLOR: Record<string, string> = {
 }
 .ex-chevron.is-open {
   transform: rotate(90deg);
-  color: rgba(156, 121, 72, 0.65);
+  color: rgba(156, 121, 72, 0.85);
 }
 
 /* ── Collapsible body ──────────────────────────────────── */
@@ -336,9 +339,10 @@ const DIFF_COLOR: Record<string, string> = {
 
 .ex-item-desc {
   font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
-  font-weight: 400;
-  color: rgba(212, 201, 168, 0.75);
+  font-size: 1em;
+  font-weight: 500;
+  padding: 0.5em 0;
+  color: rgba(112, 201, 168, 0.65);
   line-height: 1.6;
   margin-bottom: 8px;
 }
@@ -351,14 +355,14 @@ const DIFF_COLOR: Record<string, string> = {
 
 .ex-diff {
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
+  font-size: 0.85em;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
 .ex-cat-chip {
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 0.86em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(212, 201, 168, 0.28);

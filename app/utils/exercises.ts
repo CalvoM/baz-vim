@@ -1,5 +1,6 @@
 export type Difficulty = "beginner" | "intermediate" | "advanced";
 export type Category =
+  | "introduction"
   | "navigation"
   | "editing"
   | "motions"
@@ -15,6 +16,14 @@ export interface Exercise {
 }
 
 export const EXERCISES: Exercise[] = [
+  // Introduction
+  {
+    id: "introduction-to-vim",
+    title: "Introduction",
+    category: "introduction",
+    difficulty: "beginner",
+    description: "Understanding vim",
+  },
   // Navigation
   {
     id: "hjkl-01",
@@ -127,6 +136,7 @@ export const CATEGORY_ORDER: Category[] = [
 ];
 
 export const CATEGORY_LABELS: Record<Category, string> = {
+  introduction: "Introduction",
   navigation: "Navigation",
   motions: "Motions",
   editing: "Editing",
