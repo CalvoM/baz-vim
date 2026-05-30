@@ -16,7 +16,9 @@ useHead({
   <div class="orb orb-maroon" aria-hidden="true" />
   <div class="orb orb-forest" aria-hidden="true" />
   <div class="dot-grid"       aria-hidden="true" />
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
   <ToastContainer />
 </template>
 
