@@ -11,6 +11,45 @@ import { bazVimTheme } from "../theme";
 const lang_meta = useLang();
 const editor_stats = useEditorStats();
 const vim_editor = useVimeEditor();
+const toast = useToast();
+const sidebar = useEditorSidebar();
+
+Vim.defineEx("quit", "q", (_cm: any, params: any) => {
+  const bang = params.argString?.trim() === "!";
+  toast.show(
+    bang
+      ? "Force quit? Bold move. Still not leaving."
+      : "Nice try — but you can't escape that easily.",
+    bang ? "error" : "default",
+    4500,
+  );
+});
+
+Vim.defineEx("wq", "wq", () => {
+  toast.show("Saved and quit? There's nothing to save here.", "success", 4500);
+});
+
+Vim.defineEx("x", "x", () => {
+  toast.show("x marks the spot — but not the exit.", "default", 4500);
+});
+
+Vim.defineAction("toggleSidebar", () => {
+  sidebar.toggle();
+  toast.show(
+    sidebar.collapsed.value ? "Sidebar hidden." : "Sidebar revealed.",
+    "default",
+    2500,
+  );
+});
+Vim.mapCommand("<Space>e", "action", "toggleSidebar", {}, { context: "normal" });
+
+Vim.defineEx("edit", "e", (_cm: any, params: any) => {
+  const arg = params.argString?.trim();
+  if (arg === "exercises") {
+    toast.show("Opening exercises...", "success", 2000);
+    navigateTo("/editor/exercises");
+  }
+});
 
 const cmRef = ref<CodeMirrorRef>();
 

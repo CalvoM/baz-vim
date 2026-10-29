@@ -79,12 +79,37 @@ const toast = useToast();
 /* ── Keyboard handler ────────────────────────────────── */
 let lastKeyWasG = false;
 let gTimer: ReturnType<typeof setTimeout> | null = null;
+const keyBuffer = ref("");
 
 function handleKeydown(e: KeyboardEvent) {
   const key = e.key;
 
   if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
     e.preventDefault();
+    return;
+  }
+
+  // Colon-command buffer
+  if (keyBuffer.value || key === ":") {
+    if (key === "Escape") {
+      keyBuffer.value = "";
+      return;
+    }
+    if (key === "Enter") {
+      const cmd = keyBuffer.value.trim();
+      if (cmd === ":u") {
+        if (currentSection.value > 0) {
+          navigate(-1);
+        } else {
+          toast.show("Nice try.", "default", 3000);
+          window.location.reload();
+        }
+      }
+      keyBuffer.value = "";
+      return;
+    }
+    if (key.length === 1) keyBuffer.value += key;
+    if (keyBuffer.value.length > 10) keyBuffer.value = "";
     return;
   }
 
@@ -257,7 +282,7 @@ const steps = [
             >
           </p>
 
-          <NuxtLink to="/editor" class="cta-btn">
+          <NuxtLink to="/editor/introduction" class="cta-btn">
             Begin Your Journey <span class="cta-arrow">→</span>
           </NuxtLink>
 
@@ -373,7 +398,7 @@ const steps = [
             Your vim journey starts with a single keystroke.
           </p>
 
-          <NuxtLink to="/editor" class="cta-btn cta-btn--lg">
+          <NuxtLink to="/editor/introduction" class="cta-btn cta-btn--lg">
             Open the Editor <span class="cta-arrow">→</span>
           </NuxtLink>
 

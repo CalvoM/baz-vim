@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const collapsed = ref(false);
+const { collapsed, toggle } = useEditorSidebar();
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const collapsed = ref(false);
     <div class="layout-sidebar">
       <ExerciseSidebar
         :collapsed="collapsed"
-        @toggle="collapsed = !collapsed"
+        @toggle="toggle"
       />
     </div>
 
